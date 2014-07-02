@@ -1,4 +1,15 @@
 Unityone::Application.configure do
+# Added this line in an attempt to purge the cache from privious tests, so that the resaults are not repeated for no reason
+# based on recommendation from: https://stackoverflow.com/questions/13309121/is-rails-cache-purged-between-tests
+# The NullStore ensures that nothing will ever be cached.
+config.cache_store = :null_store
+
+before(:all) do
+  Rails.cache.clear
+end
+
+# =====END OF INSERT CODE=====
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # The test environment is used exclusively to run your application's
