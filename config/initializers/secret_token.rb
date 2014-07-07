@@ -9,4 +9,19 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-Unityone::Application.config.secret_key_base = 'f17b8e47d7bdf2d0e7bd4562e0b070cdc5d3c9494c7295d3ffe3000262ebf94768eba5a0de7409d49b41d72fcae7ae4af3d4496651ebb516c96da484c0eac7d8'
+require 'securerandom'
+
+def secure_token
+  token_file = Rails.root.join('.secret')
+  if File.exist?(token_file)
+    # Use the existing token.
+    File.read(token_file).chomp
+  else
+    # Generate a new token and store it in token_file.
+    token = SecureRandom.hex(64)
+    File.write(token_file, token)
+    token
+  end
+end
+
+unityone::Application.config.secret_key_base = secure_token
